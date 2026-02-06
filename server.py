@@ -510,6 +510,45 @@ class PromptServer():
                 file = os.path.join(output_dir, filename)
 
                 if os.path.isfile(file):
+                    # Handle headerless raw binary files (.raw, .bin, .dat)
+                    ext = os.path.splitext(filename)[1].lower()
+                    if ext in {'.raw', '.bin', '.dat'}:
+                        import numpy as np
+                        import math
+
+                        bit_depth = int(request.rel_url.query.get('bit_depth', '16'))
+                        np_dtype = np.uint8 if bit_depth == 8 else np.uint16
+                        max_val = (1 << bit_depth) - 1
+
+                        data = np.fromfile(file, dtype=np_dtype)
+                        total = len(data)
+
+                        if total == 0:
+                            return web.Response(status=400)
+
+                        # auto-detect dimensions
+                        w, h = 0, 0
+                        for rw, rh in [(4, 3), (1, 1), (3, 2), (16, 9)]:
+                            cw = int(math.sqrt(total * rw / rh))
+                            if cw > 0 and total % cw == 0:
+                                w, h = cw, total // cw
+                                break
+                        if w == 0:
+                            w = int(math.sqrt(total))
+                            while w > 0 and total % w != 0:
+                                w -= 1
+                            h = total // w if w > 0 else total
+
+                        data = data[:w * h].reshape(h, w)
+                        norm = (data.astype(np.float32) / max_val * 255).clip(0, 255).astype(np.uint8)
+
+                        img = Image.fromarray(norm, mode='L')
+                        buffer = BytesIO()
+                        img.save(buffer, format='PNG', compress_level=1)
+                        buffer.seek(0)
+                        return web.Response(body=buffer.read(), content_type='image/png',
+                                            headers={"Content-Disposition": f"filename=\"{filename}\""})
+
                     if 'preview' in request.rel_url.query:
                         with Image.open(file) as img:
                             preview_info = request.rel_url.query['preview'].split(';')
