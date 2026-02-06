@@ -1,0 +1,32 @@
+# ComfyRaw - OpenCV Node Editor
+# Install: uv sync (recommended) or pip install -r requirements.txt
+
+# Image Processing
+opencv-python>=4.8.0
+numpy>=1.25.0
+Pillow>=9.0.0
+
+# Web Server
+aiohttp>=3.11.8
+yarl>=1.18.0
+requests
+
+# Config & Data
+pydantic>=2.0
+pydantic-settings>=2.0
+pyyaml
+
+# Database
+alembic
+SQLAlchemy
+
+# Utilities
+tqdm
+psutil
+typing_extensions>=4.0
+packaging
+
+# Frontend
+comfyui-frontend-package>=1.38.0
+comfyui-workflow-templates>=0.8.0
+comfyui-embedded-docs>=0.4.0

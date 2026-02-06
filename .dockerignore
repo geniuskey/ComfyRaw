@@ -1,0 +1,58 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.eggs
+*.egg-info
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv
+ENV
+env
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Tests
+tests-unit
+.pytest_cache
+.coverage
+htmlcov
+coverage_report
+
+# Documentation
+docs
+*.md
+!README.md
+
+# Build artifacts
+build
+dist
+
+# Temporary files
+*.log
+*.tmp
+temp
+.cache
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Large/unnecessary files
+models
+*.pth
+*.pt
+*.ckpt
+*.safetensors

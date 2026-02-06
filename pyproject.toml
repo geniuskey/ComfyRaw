@@ -1,0 +1,172 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "comfyraw"
+version = "0.1.0"
+description = "CPU-based OpenCV Node Editor for Image/Video Processing"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [
+    { name = "geniuskey" }
+]
+keywords = [
+    "opencv",
+    "image-processing",
+    "video-processing",
+    "node-editor",
+    "workflow",
+    "computer-vision",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+dependencies = [
+    # Image Processing
+    "opencv-python>=4.8.0",
+    "numpy>=1.25.0",
+    "Pillow>=9.0.0",
+    # Web Server
+    "aiohttp>=3.11.8",
+    "yarl>=1.18.0",
+    "requests",
+    # Config & Data
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "pyyaml",
+    # Database
+    "alembic",
+    "SQLAlchemy",
+    # Utilities
+    "tqdm",
+    "psutil",
+    "typing_extensions>=4.0",
+    "packaging",
+    # Frontend
+    "comfyui-frontend-package>=1.38.0",
+    "comfyui-workflow-templates>=0.8.0",
+    "comfyui-embedded-docs>=0.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+    "ruff",
+]
+
+[project.scripts]
+comfyraw = "main:main"
+
+[project.urls]
+Homepage = "https://github.com/geniuskey/ComfyRaw"
+Repository = "https://github.com/geniuskey/ComfyRaw"
+Issues = "https://github.com/geniuskey/ComfyRaw/issues"
+
+[tool.setuptools]
+packages = ["comfy", "comfy_cv", "comfy_extras"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests-unit"]
+pythonpath = ["."]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+addopts = "-v --tb=short"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["comfy_cv", "comfy"]
+omit = ["*/tests/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+]
+
+[tool.ruff]
+lint.select = [
+  "N805", # invalid-first-argument-name-for-method
+  "S307", # suspicious-eval-usage
+  "S102", # exec
+  "E",
+  "T",    # print-usage
+  "W",
+  # The "F" series in Ruff stands for "Pyflakes" rules, which catch various Python syntax errors and undefined names.
+  # See all rules here: https://docs.astral.sh/ruff/rules/#pyflakes-f
+  "F",
+]
+
+lint.ignore = ["E501", "E722", "E731", "E712", "E402", "E741"]
+
+exclude = ["*.ipynb", "**/generated/*.pyi"]
+
+[tool.pylint]
+master.py-version = "3.10"
+master.extension-pkg-allow-list = [
+  "pydantic",
+]
+reports.output-format = "colorized"
+similarities.ignore-imports = "yes"
+messages_control.disable = [
+  "missing-module-docstring",
+  "missing-class-docstring",
+  "missing-function-docstring",
+  "line-too-long",
+  "too-few-public-methods",
+  "too-many-public-methods",
+  "too-many-instance-attributes",
+  "too-many-positional-arguments",
+  "broad-exception-raised",
+  "too-many-lines",
+  "invalid-name",
+  "unused-argument",
+  "broad-exception-caught",
+  "consider-using-with",
+  "fixme",
+  "too-many-statements",
+  "too-many-branches",
+  "too-many-locals",
+  "too-many-arguments",
+  "too-many-return-statements",
+  "too-many-nested-blocks",
+  "duplicate-code",
+  "abstract-method",
+  "superfluous-parens",
+  "arguments-differ",
+  "redefined-builtin",
+  "unnecessary-lambda",
+  "dangerous-default-value",
+  "invalid-overridden-method",
+  "bad-classmethod-argument",
+  "wrong-import-order",
+  "ungrouped-imports",
+  "unnecessary-pass",
+  "unnecessary-lambda-assignment",
+  "no-else-return",
+  "unused-variable",
+]

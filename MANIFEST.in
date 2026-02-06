@@ -1,0 +1,24 @@
+include LICENSE
+include README.md
+include requirements.txt
+include pyproject.toml
+
+recursive-include comfy *.py *.yaml *.json
+recursive-include comfy_cv *.py
+recursive-include comfy_extras *.py
+recursive-include web *
+
+exclude .gitignore
+exclude .dockerignore
+exclude Dockerfile
+exclude docker-compose.yml
+
+prune tests-unit
+prune docs
+prune .git
+prune __pycache__
+prune *.egg-info
+
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude .DS_Store
